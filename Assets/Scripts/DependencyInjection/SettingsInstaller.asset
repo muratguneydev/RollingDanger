@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99004e71d73147b88f8219b0c4a3302, type: 3}
   m_Name: SettingsInstaller
   m_EditorClassIdentifier: 
+  RollingPlayerSettings:
+    Velocity: 15
+    JumpForce: 1

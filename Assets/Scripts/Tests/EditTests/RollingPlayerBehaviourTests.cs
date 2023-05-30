@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEngine.TestTools;
 
-public class PlayerTests
+public class RollingPlayerBehaviourTests
 {
     // A Test behaves as an ordinary method
     [Test]
