@@ -1,4 +1,3 @@
-using Scripts;
 using UnityEngine;
 using Zenject;
 
@@ -8,12 +7,12 @@ namespace RollingDanger.RollingPlayer
 	public class RollingPlayerBehaviour : MonoBehaviour
 	{
 		private Rigidbody _rigidBody;
-		private KeyInput _keyInput;
+		private Mover _mover;
 
 		[Inject]
-		public virtual void Construct(KeyInput keyInput)
+		public virtual void Construct(Mover mover)
 		{
-			_keyInput = keyInput;
+			_mover = mover;
 		}
 
 		// Start is called before the first frame update
@@ -30,7 +29,8 @@ namespace RollingDanger.RollingPlayer
 
 		void FixedUpdate()
 		{
-
+			_rigidBody.AddForce(_mover.GetForce(), ForceMode.Acceleration);
+			//Debug.Log($"Current x:{_rigidBody.transform.position.x}");
 		}
 	}
 }
