@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "RollingPlayer",
         "TestFramework",
-        "Scripts"
+        "Scripts",
+        "Events"
     ],
     "includePlatforms": [
         "Editor"

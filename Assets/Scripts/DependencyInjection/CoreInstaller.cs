@@ -1,3 +1,5 @@
+using RollingDanger.Events;
+using RollingDanger.RollingPlayer;
 using Scripts;
 using Zenject;
 
@@ -5,8 +7,8 @@ public class CoreInstaller : Installer
 {
 	public override void InstallBindings()
 	{
-		// SignalBusInstaller.Install(Container);
-		// Container.Bind<IEventBus>().To<EventBus>().AsSingle();
+		SignalBusInstaller.Install(Container);
+		Container.Bind<IEventBus>().To<EventBus>().AsSingle();
 
 		Container.Bind<KeyInput>().AsSingle();
 		// Container.Bind<DeltaTime>().AsSingle();
@@ -28,5 +30,10 @@ public class CoreInstaller : Installer
 		// Container.BindSignal<ResetButtonClickedUISignal>()
         //     .ToMethod<GameController>(x => x.OnGameReset)
 		// 	.FromResolve();
+
+		Container.DeclareSignal<JumpSignal>();
+		Container.BindSignal<JumpSignal>()
+            .ToMethod<Mover>(x => x.OnJump)
+			.FromResolve();
 	}
 }

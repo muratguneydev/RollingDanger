@@ -13,6 +13,6 @@ namespace RollingDanger.RollingPlayer
 
 		public float Velocity = 17.5f;
 
-		public float JumpForce = 120;
+		public float JumpForce = 10;
 	}
 }

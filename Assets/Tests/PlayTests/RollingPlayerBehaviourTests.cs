@@ -66,10 +66,24 @@ public class RollingPlayerBehaviourTests : ZenjectIntegrationTestFixture
 		Assert.AreEqual(setUp.RollingPlayerGameObject.transform.position.x, originalX);
 	}
 
+	[UnityTest]
+    public IEnumerator Should_Jump_WhenSpaceKeyDown()
+	{
+		//Arrange
+		var setUp = SetUp(KeyInputStub.Space);
+		var originalY = setUp.RollingPlayerGameObject.transform.position.y;
+		//Act
+		//Let it jump up on the FixedUpdate event which happens every 0.2 seconds. Note: WaitForFixedUpdate() doesn't work.
+		yield return new WaitForSeconds(0.21f);
+		yield return new WaitForSeconds(0.21f);
+		//Assert
+		Assert.IsTrue(setUp.RollingPlayerGameObject.transform.position.y > originalY);
+	}
+
 	private TestDependencyInstaller SetUp(KeyInput keyInput)
 	{
 		PreInstall();
-		var setUp = new TestDependencyInstaller(Container, keyInput, new RollingPlayerSettings(Velocity, 0f));
+		var setUp = new TestDependencyInstaller(Container, keyInput, new RollingPlayerSettings(Velocity, 10f));
 		setUp.Install();
 		PostInstall();
 

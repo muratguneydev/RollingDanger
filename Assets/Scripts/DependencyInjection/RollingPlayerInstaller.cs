@@ -13,7 +13,8 @@ public class RollingPlayerInstaller : Installer<RollingPlayerSettings, RollingPl
 	public override void InstallBindings()
 	{
 		Container.Bind<Mover>().AsSingle();
-		Container.BindInstance(_rollingPlayerSettings.Velocity).WhenInjectedInto<Mover>();
+		//Container.BindInstance(_rollingPlayerSettings).AsSingle();
+		//Container.BindInstance(_rollingPlayerSettings.Velocity).WhenInjectedInto<Mover>();
 
 		// Container.DeclareSignal<FrogPlayerMovedSignal>();
 		// Container.BindSignal<FrogPlayerMovedSignal>()

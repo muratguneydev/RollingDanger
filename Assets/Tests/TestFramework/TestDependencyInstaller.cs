@@ -35,9 +35,13 @@ public class TestDependencyInstaller
 	{
 		RegisterDependencies();
 		//SetAnimatorControllerToBeAbleToGetAndSetAnimatorParameters();
+
+		var dummyUIEventHandler = UIEventHandler;
 	}
 
 	public RollingPlayerBehaviour RollingPlayerBehaviour => _container.Resolve<RollingPlayerBehaviour>();
+	//Note: This is to trigger UIEventHandler events like Update to be fired. If it is not resolved, its events won't be fired.
+	public UIEventHandler UIEventHandler => _container.Resolve<UIEventHandler>();
 	public GameObject RollingPlayerGameObject => RollingPlayerBehaviour.gameObject;
 	// public IEventBus EventBus => _container.Resolve<IEventBus>();
 	// public GameController GameController => _container.Resolve<GameController>();
@@ -49,11 +53,15 @@ public class TestDependencyInstaller
 	private void RegisterDependencies()
 	{
 		_container.Install<CoreInstaller>();
+
+		_container.BindInstance(_rollingPlayerSettings);
 		RollingPlayerInstaller.Install(_container, _rollingPlayerSettings);
 		//InstallEnemy1Dependencies();
 
 		_container.Rebind<KeyInput>().FromInstance(_keyInput);//For non-interface types, rebind cannot be AsSingle.
 		_container.Bind<RollingPlayerBehaviour>().FromNewComponentOnNewGameObject()
+			.AsSingle();
+		_container.Bind<UIEventHandler>().FromNewComponentOnNewGameObject()
 			.AsSingle();
 		// _container.Bind<GameOverBehaviour>().FromNewComponentOnNewGameObject()
 		// 	.AsSingle();

@@ -1,12 +1,8 @@
 {
-    "name": "TestFramework",
+    "name": "Events",
     "rootNamespace": "",
     "references": [
-        "GUID:e03d62035500040cc8b869307b4fdfb5",
-        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
-        "GUID:71d20ccb186d84b149d3be1a59676cdd",
-        "GUID:1bbb679d2b64c4fff92513a418d598c3",
-        "GUID:7d744ff94ba61485eb92a86184d54131"
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

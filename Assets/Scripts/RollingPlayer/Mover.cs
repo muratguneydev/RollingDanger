@@ -6,14 +6,40 @@ namespace RollingDanger.RollingPlayer
 	public class Mover
 	{
 		private readonly KeyInput _keyInput;
-		private readonly float _velocityUnitsPerFixedFrame;
+		private readonly RollingPlayerSettings _rollingPlayerSettings;
+		//private readonly float _velocityUnitsPerFixedFrame;
+		private Vector3 _jumpForce;
 
-		public Mover(KeyInput keyInput, float velocityUnitsPerFixedFrame)
+		public Mover(KeyInput keyInput, RollingPlayerSettings rollingPlayerSettings)
+		//float velocityUnitsPerFixedFrame)
 		{
 			_keyInput = keyInput;
-			_velocityUnitsPerFixedFrame = velocityUnitsPerFixedFrame;
+			_rollingPlayerSettings = rollingPlayerSettings;
+			//_velocityUnitsPerFixedFrame = velocityUnitsPerFixedFrame;
 		}
 
-		public Vector3 GetForce() => _keyInput.GetNormalizedVector() * _velocityUnitsPerFixedFrame;
+		public virtual Vector3 GetGroundForce()
+		{
+			var groundForce = _keyInput.GetNormalizedVector() * _rollingPlayerSettings.Velocity;
+			return groundForce;
+		}
+
+		public virtual Vector3 GetJumpForce()
+		{
+			//Debug.Log($"Jump force:{_jumpForce}");
+			var force = _jumpForce;
+			ResetJumpForce();
+			return force;
+		}
+
+		private void ResetJumpForce()
+		{
+			_jumpForce = Vector3.zero;
+		}
+
+		public void OnJump()
+		{
+			_jumpForce = Vector3.up * _rollingPlayerSettings.JumpForce;
+		}
 	}
 }

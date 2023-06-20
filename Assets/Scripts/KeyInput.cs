@@ -6,5 +6,7 @@ namespace Scripts
 	{
 		public virtual Vector3 GetNormalizedVector()
 			=> new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+
+		public virtual bool IsSpaceKeyDown => Input.GetKeyDown(KeyCode.Space);
 	}
 }
