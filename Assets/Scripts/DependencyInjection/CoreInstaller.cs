@@ -1,5 +1,4 @@
 using RollingDanger.Events;
-using RollingDanger.RollingPlayer;
 using Scripts;
 using Zenject;
 
@@ -31,9 +30,6 @@ public class CoreInstaller : Installer
         //     .ToMethod<GameController>(x => x.OnGameReset)
 		// 	.FromResolve();
 
-		Container.DeclareSignal<JumpSignal>();
-		Container.BindSignal<JumpSignal>()
-            .ToMethod<Mover>(x => x.OnJump)
-			.FromResolve();
+		
 	}
 }

@@ -1,3 +1,4 @@
+using RollingDanger.Events;
 using RollingDanger.RollingPlayer;
 using Zenject;
 
@@ -13,6 +14,16 @@ public class RollingPlayerInstaller : Installer<RollingPlayerSettings, RollingPl
 	public override void InstallBindings()
 	{
 		Container.Bind<Mover>().AsSingle();
+
+		Container.DeclareSignal<JumpSignal>();
+		Container.BindSignal<JumpSignal>()
+            .ToMethod<Mover>(x => x.OnJump)
+			.FromResolve();
+		Container.DeclareSignal<RollSignal>();
+		Container.BindSignal<RollSignal>()
+            .ToMethod<Mover>(x => x.OnRoll)
+			.FromResolve();
+
 		//Container.BindInstance(_rollingPlayerSettings).AsSingle();
 		//Container.BindInstance(_rollingPlayerSettings.Velocity).WhenInjectedInto<Mover>();
 

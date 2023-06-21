@@ -10,7 +10,7 @@ namespace RollingDanger.RollingPlayer
 	{
 		private Rigidbody _rigidBody;
 		private Mover _mover;
-	private List<Action> _actions = new List<Action>();
+		private List<Action> _actions = new List<Action>();
 
 
 		[Inject]
@@ -35,9 +35,8 @@ namespace RollingDanger.RollingPlayer
 
 		void FixedUpdate()
 		{
-			_rigidBody.AddForce(_mover.GetGroundForce(), ForceMode.Acceleration);
+			_rigidBody.AddForce(_mover.GetRollForce(), ForceMode.Acceleration);
 			_rigidBody.AddForce(_mover.GetJumpForce(), ForceMode.Impulse);
-			//Debug.Log($"Current x:{_rigidBody.transform.position.x}");
 		}
 	}
 }

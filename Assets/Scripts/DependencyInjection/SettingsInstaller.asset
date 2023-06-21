@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RollingPlayerSettings:
     Velocity: 15
-    JumpForce: 10
+    JumpVelocity: 10

@@ -2,7 +2,8 @@
     "name": "RollingPlayer",
     "rootNamespace": "",
     "references": [
-        "Scripts"
+        "Scripts",
+        "Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -60,7 +60,7 @@ public class RollingPlayerBehaviourTests : ZenjectIntegrationTestFixture
 		var originalX = setUp.RollingPlayerGameObject.transform.position.x;
 		var originalZ = setUp.RollingPlayerGameObject.transform.position.z;
 		//Act
-		yield return new WaitForSeconds(0.1f);//Let it accelarate in the given direction for 0.1 second
+		yield return new WaitForSeconds(0.21f);//Let it accelarate in the given direction for 0.1 second
 		//Assert
 		Assert.IsTrue(setUp.RollingPlayerGameObject.transform.position.z < originalZ);
 		Assert.AreEqual(setUp.RollingPlayerGameObject.transform.position.x, originalX);

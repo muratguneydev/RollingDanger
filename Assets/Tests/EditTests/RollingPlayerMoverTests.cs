@@ -1,20 +1,21 @@
-using System.Linq;
-using System.Reflection;
 using NUnit.Framework;
+using RollingDanger.Events;
 using RollingDanger.RollingPlayer;
-using Scripts;
+using UnityEngine;
 
 public class RollingPlayerMoverTests
 {
 	[Test]
-	public void ShouldProvideCorrectForceForEveryDirection()
+	public void ShouldProvideCorrectForceForGivenDirection()
 	{
-		var type = typeof(KeyInputStub);
-		foreach (var p in type.GetProperties(BindingFlags.Public | BindingFlags.Static)
-							  .Where(property => property.PropertyType == typeof(KeyInput)))
-		{
-			VerifyForceForDirection(p.GetValue(null, null) as KeyInput);
-		}
+		//Arrange
+		var rollVelocity = 123f;
+		var rollDirection = Vector3.up + Vector3.left;
+		var mover = new Mover(new RollingPlayerSettings(rollVelocity, default));
+		mover.OnRoll(new RollSignal(rollDirection));
+		//Act & Assert
+		var expectedForce = rollDirection * rollVelocity;
+		Assert.AreEqual(expectedForce, mover.GetRollForce());
 	}
 
 	[Test]
@@ -22,20 +23,10 @@ public class RollingPlayerMoverTests
 	{
 		//Arrange
 		var jumpForce = 123f;
-		var keyInput = KeyInputStub.Space;
-		var mover = new Mover(keyInput, new RollingPlayerSettings(default, jumpForce));
+		var mover = new Mover(new RollingPlayerSettings(default, jumpForce));
+		mover.OnJump();
 		//Act & Assert
-		var expectedForce = keyInput.GetNormalizedVector() * jumpForce;
+		var expectedForce = Vector3.up * jumpForce;
 		Assert.AreEqual(expectedForce, mover.GetJumpForce());
-	}
-
-	private static void VerifyForceForDirection(KeyInput keyInput)
-	{
-		//Arrange
-		var velocity = 123f;
-		var mover = new Mover(keyInput, new RollingPlayerSettings(velocity, default));
-		//Act & Assert
-		var expectedForce = keyInput.GetNormalizedVector() * velocity;
-		Assert.AreEqual(expectedForce, mover.GetGroundForce());
 	}
 }

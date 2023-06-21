@@ -33,6 +33,9 @@ namespace Scripts
 			{
 				_eventBus.Fire(new JumpSignal());
 			}
+
+			var rollDirection = _keyInput.GetNormalizedVector();
+			_eventBus.Fire(new RollSignal(rollDirection));
 		}
 	}
 }
