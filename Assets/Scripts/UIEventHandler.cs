@@ -29,6 +29,8 @@ namespace Scripts
 
 		void Update()
 		{
+			//Note:Firing events from Update may not be the best approach.
+			//Debug.Log($"_keyInput.IsSpaceKeyDown:{_keyInput.IsSpaceKeyDown}");
 			if (_keyInput.IsSpaceKeyDown)
 			{
 				_eventBus.Fire(new JumpSignal());

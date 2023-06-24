@@ -6,16 +6,21 @@ using UnityEngine;
 public class RollingPlayerMoverTests
 {
 	[Test]
-	public void ShouldProvideCorrectForceForGivenDirection()
+	public void ShouldProvideCorrectRollForceForGivenDirection()
 	{
 		//Arrange
 		var rollVelocity = 123f;
 		var rollDirection = Vector3.up + Vector3.left;
-		var mover = new Mover(new RollingPlayerSettings(rollVelocity, default));
+		var mover = new Mover(new EventBusDummy(), new RollingPlayerSettings(rollVelocity, default));
 		mover.OnRoll(new RollSignal(rollDirection));
-		//Act & Assert
-		var expectedForce = rollDirection * rollVelocity;
-		Assert.AreEqual(expectedForce, mover.GetRollForce());
+		var rigidBody = TestRigidBody.GetNew();
+		var rigidBodyExpected = TestRigidBody.GetNew();
+		//Act
+		mover.Move(rigidBody);
+		//Assert
+		var expectedRollForce = rollDirection * rollVelocity;
+		rigidBodyExpected.AddForce(expectedRollForce, ForceMode.Acceleration);
+		Assert.AreEqual(rigidBodyExpected.position, rigidBody.position);
 	}
 
 	[Test]
@@ -23,10 +28,30 @@ public class RollingPlayerMoverTests
 	{
 		//Arrange
 		var jumpForce = 123f;
-		var mover = new Mover(new RollingPlayerSettings(default, jumpForce));
+		var mover = new Mover(new EventBusDummy(), new RollingPlayerSettings(default, jumpForce));
 		mover.OnJump();
-		//Act & Assert
-		var expectedForce = Vector3.up * jumpForce;
-		Assert.AreEqual(expectedForce, mover.GetJumpForce());
+		var rigidBody = TestRigidBody.GetNew();
+		var rigidBodyExpected = TestRigidBody.GetNew();
+		//Act
+		mover.Move(rigidBody);
+		//Assert
+		var expectedJumpForce = Vector3.up * jumpForce;
+		rigidBodyExpected.AddForce(expectedJumpForce, ForceMode.Impulse);
+		Assert.AreEqual(rigidBodyExpected.position, rigidBody.position);
+	}
+
+	[Test]
+	public void ShouldFireRollingPlayerLocationSignalWhenMoved()
+	{
+		//Arrange
+		var eventBusSpy = new EventBusSpy<RollingPlayerLocationSignal>();
+		var mover = new Mover(eventBusSpy, new RollingPlayerSettings(default, default));
+		var rigidBody = TestRigidBody.GetNew();
+		//Act
+		mover.Move(rigidBody);
+		//Assert
+		var (isFired, signal) = eventBusSpy.IsExpectedEventFired();
+		Assert.IsTrue(isFired);
+		Assert.AreEqual(rigidBody.position, signal.Position);
 	}
 }

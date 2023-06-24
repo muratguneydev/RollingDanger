@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RollingDanger.Events;
 using UnityEngine;
 using Zenject;
 
@@ -14,17 +15,10 @@ namespace RollingDanger.RollingPlayer
 
 
 		[Inject]
-		public virtual void Construct(Mover mover)
-		{
-			_mover = mover;
-		}
+		public virtual void Construct(Mover mover) => _mover = mover;
 
-		// Start is called before the first frame update
-		void Start()
-		{
-			_rigidBody = GetComponent<Rigidbody>();
-
-		}
+		void Start() => _rigidBody = GetComponent<Rigidbody>();
+		
 
 		// Update is called once per frame
 		// void Update()
@@ -35,8 +29,12 @@ namespace RollingDanger.RollingPlayer
 
 		void FixedUpdate()
 		{
-			_rigidBody.AddForce(_mover.GetRollForce(), ForceMode.Acceleration);
-			_rigidBody.AddForce(_mover.GetJumpForce(), ForceMode.Impulse);
+			_mover.Move(_rigidBody);
+
+			// var moveForce = _mover.GetMoveForce();
+			// _rigidBody.AddForce(moveForce.RollForce.Force, ForceMode.Acceleration);
+			// //Note:We can implement Raycasting to see if we are touching the ground to avoid jump spamming i.e. continous jumps.
+			// _rigidBody.AddForce(moveForce.JumpForce.Force, ForceMode.Impulse);//this.gameObject.transform.position
 		}
 	}
 }

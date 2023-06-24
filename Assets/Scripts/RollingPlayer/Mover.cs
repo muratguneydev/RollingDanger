@@ -3,33 +3,39 @@ using UnityEngine;
 
 namespace RollingDanger.RollingPlayer
 {
-	public partial class Mover
+	public class Mover
 	{
 		private readonly JumpForce _jumpForce;
 		private readonly RollForce _rollForce;
+		private readonly IEventBus _eventBus;
 
-		public Mover(RollingPlayerSettings rollingPlayerSettings)
+		public Mover(IEventBus eventBus, RollingPlayerSettings rollingPlayerSettings)
 		{
 			_jumpForce = new JumpForce(rollingPlayerSettings.JumpVelocity);
 			_rollForce = new RollForce(rollingPlayerSettings.Velocity);
-		}
-
-		public virtual Vector3 GetRollForce()
-		{
-			var rollForce = _rollForce.Force;
-			_rollForce.Reset();
-			return rollForce;
-		}
-
-		public virtual Vector3 GetJumpForce()
-		{
-			var force = _jumpForce.Force;
-			_jumpForce.Reset();
-			return force;
+			_eventBus = eventBus;
 		}
 
 		public void OnJump() => _jumpForce.Jump();
 
 		public void OnRoll(RollSignal rollSignal) => _rollForce.Roll(rollSignal.RollDirection);
+
+		public void Move(Rigidbody rigidBody)
+		{
+			var moveForce = GetMoveForce();
+			rigidBody.AddForce(moveForce.RollForce.Force, ForceMode.Acceleration);
+			//Note:We can implement Raycasting to see if we are touching the ground to avoid jump spamming i.e. continous jumps.
+			rigidBody.AddForce(moveForce.JumpForce.Force, ForceMode.Impulse);
+
+			_eventBus.Fire(new RollingPlayerLocationSignal(rigidBody.transform.position));
+		}
+
+		private MoveForce GetMoveForce()
+		{
+			var moveForce = new MoveForce(_rollForce, _jumpForce);
+			_rollForce.Reset();
+			_jumpForce.Reset();
+			return moveForce;
+		}
 	}
 }
