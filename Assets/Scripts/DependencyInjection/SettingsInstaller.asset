@@ -15,3 +15,6 @@ MonoBehaviour:
   RollingPlayerSettings:
     Velocity: 15
     JumpVelocity: 10
+  CameraSettings:
+    Offset: {x: 0, y: 0, z: 0}
+    SmoothTime: 0.3

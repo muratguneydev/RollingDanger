@@ -2,6 +2,7 @@ using UnityEngine;
 using Scripts;
 using Zenject;
 using RollingDanger.RollingPlayer;
+using Scripts.Camera;
 
 public class TestDependencyInstaller
 {
@@ -10,6 +11,7 @@ public class TestDependencyInstaller
 	private readonly DiContainer _container;
 	private readonly KeyInput _keyInput;
 	private readonly RollingPlayerSettings _rollingPlayerSettings;
+	private readonly CameraSettings _cameraSettings = new CameraSettings(default, default);
 
 	public TestDependencyInstaller(DiContainer container, KeyInput keyInput, RollingPlayerSettings rollingPlayerSettings)
 	{
@@ -53,6 +55,9 @@ public class TestDependencyInstaller
 	private void RegisterDependencies()
 	{
 		_container.Install<CoreInstaller>();
+
+		_container.BindInstance(_cameraSettings);
+		CameraInstaller.Install(_container, _cameraSettings);
 
 		_container.BindInstance(_rollingPlayerSettings);
 		RollingPlayerInstaller.Install(_container, _rollingPlayerSettings);

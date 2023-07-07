@@ -6,10 +6,7 @@ public class RollingPlayerInstaller : Installer<RollingPlayerSettings, RollingPl
 {
 	private readonly RollingPlayerSettings _rollingPlayerSettings;
 
-	public RollingPlayerInstaller(RollingPlayerSettings rollingPlayerSettings)
-	{
-		_rollingPlayerSettings = rollingPlayerSettings;
-	}
+	public RollingPlayerInstaller(RollingPlayerSettings rollingPlayerSettings) => _rollingPlayerSettings = rollingPlayerSettings;
 
 	public override void InstallBindings()
 	{
@@ -23,6 +20,9 @@ public class RollingPlayerInstaller : Installer<RollingPlayerSettings, RollingPl
 		Container.BindSignal<RollSignal>()
             .ToMethod<Mover>(x => x.OnRoll)
 			.FromResolve();
+
+		Container.DeclareSignal<RollingPlayerLocationSignal>();
+
 
 		//Container.BindInstance(_rollingPlayerSettings).AsSingle();
 		//Container.BindInstance(_rollingPlayerSettings.Velocity).WhenInjectedInto<Mover>();
